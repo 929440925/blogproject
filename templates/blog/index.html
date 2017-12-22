@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block main %}
+
+    <div class="col-md-8">
+
+        <h1 class="my-4">Page Heading
+            <small>Secondary Text</small>
+        </h1>
+        {% for post in post_list %}
+            <!-- Blog Post -->
+            <div class="card mb-4">
+                <img class="card-img-top" src="{{ MEDIA_URL }}{{ post.image }}" alt="Card image cap">
+                <div class="card-body">
+                    <h2 class="card-title">{{ post.title }}</h2>
+                    <p class="card-text">{{ post.excerpt }}...</p>
+                    <a href="{{ post.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a>
+                </div>
+                <div class="card-footer text-muted">
+                    {{ post.created_time }} by
+                    <a href="#">{{ post.author }}</a>
+                    <a href="#">评论:{{ post.comment_set.count }}</a>
+                    <a href="#">阅读:{{ post.views }}</a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="no-post">暂时还没有发布的文章！</div>
+        {% endfor %}
+        <!-- Pagination -->
+        {#            <ul class="pagination justify-content-center mb-4">#}
+        {#                <li class="page-item">#}
+        {#                    <a class="page-link" href="#">&larr; Older</a>#}
+        {#                </li>#}
+        {#                <li class="page-item disabled">#}
+        {#                    <a class="page-link" href="#">Newer &rarr;</a>#}
+        {#                </li>#}
+        {#            </ul>#}
+        {% if is_paginated %}
+            <div class="pagination">
+            <ul class="pagination justify-content-center mb-4">
+                {% if first %}
+                    <li class="page-item"><a href="?page=1">1</a></li>
+                {% endif %}
+                {% if left %}
+                    {% if left_has_more %}
+                        <span>...</span>
+                    {% endif %}
+                    {% for i in left %}
+                        <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endfor %}
+                {% endif %}
+                <a href="?page={{ page_obj.number }}" style="color: red">{{ page_obj.number }}</a>
+                {% if right %}
+                    {% for i in right %}
+                        <li class="page-item"><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endfor %}
+                    {% if right_has_more %}
+                        <span>...</span>
+                    {% endif %}
+                {% endif %}
+                {% if last %}
+                    <li class="page-item"><a href="?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a>                    <li><a href="?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a>
+
+                {% endif %}
+            </ul>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock main %}

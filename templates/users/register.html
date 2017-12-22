@@ -1,0 +1,99 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/login.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.js' %}"></script>
+    {#  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">#}
+    {#  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>#}
+    <style>
+        body{
+            margin-left:auto;
+            margin-right:auto;
+            margin-TOP:100PX;
+            width:20em;
+        }
+
+        .center-block {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .captcha1 > input{
+             width:80px;
+        }
+        .captcha1 > img{
+            float:right;
+            margin-top:5px;
+        }
+    </style>
+    <script>
+ function refresh_captcha(){
+    $.get("/captcha/refresh/?"+Math.random(), function(result){
+        $('#'+event.data.form_id+' .captcha').attr("src",result.image_url);
+        $('#id_captcha_0').attr("value",result.key);
+    });
+    return false;
+}
+    </script>
+</head>
+
+<body>
+<div>
+    <form action="{% url 'register' %}" method="post" onsubmit="return checkFom()" autocomplete="off" >
+        <div style="font-size: 25px; font-weight: bold;text-align: center;">
+            <p class="center-block">用户注册</p>
+        </div>
+        <div class="input-group" {% if register_form.errors.username %}errorput{% endif %}>
+            <span class="input-group-addon" id="basic-addon1">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</span>
+            <input type="email" id="name" name="email" class="form-control" placeholder="邮箱" aria-describedby="basic-addon1" value="{{ register_form.email.value }}">
+        </div>
+        <br>
+
+        <!--下面是密码输入框-->
+        <div class="input-group" {% if register_form.errors.username %}errorput{% endif %}>
+            <span class="input-group-addon" id="basic-addon1">>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</span>
+            <input  type="password" id="password" name="password" class="form-control" placeholder="密码" aria-describedby="basic-addon1" value="{{ register_form.password.value }}">
+        </div>
+        <br>
+        <div class="input-group " {% if register_form.errors.captcha %}errorput{% endif %}>
+            <span class="input-group-addon  " id="basic-addon1">验&nbsp;证&nbsp;码</span>
+{#            <input type="text"  class="form-control" placeholder="验证码" aria-describedby="basic-addon1">#}
+        {{ register_form.captcha }}
+        </div>
+        <br>
+        <div class="error btns" id="jsEmailTips">{% for key,error in register_form.errors.items %}{{ error }}{% endfor %}{{ msg }}</div>
+        <br>
+        <!--下面是登陆按钮,包括颜色控制-->
+        <input type="submit" style="width:280px;" class="btn btn-default"value="注册并登录" />
+        <a href="{% url 'login' %}" style="width: 280px;" class="btn btn-default">已有账号？</a>
+    {% csrf_token %}
+    </form>
+</div>
+</body>
+<script>
+    function checkFom() {
+        var username = document.getElementById("name").value;
+        var password = document.getElementById("password").value;
+        var error1 = document.getElementById("error1").value;
+        var error2 = document.getElementById("error2").value;
+        if(username=="" || username==null){
+            alert("账号不可以为空");
+            return false;
+        }
+        if (password=="" || password==null){
+            alert("密码不可以为空");
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+</script>
+</html>

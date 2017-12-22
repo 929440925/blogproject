@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block main %}
+    <div class="col-lg-8">
+
+        <!-- Title -->
+        <h1 class="mt-4">{{ post.title }}</h1>
+
+        <!-- Author -->
+        <p class="lead">
+            by
+            <p>{{ post.author }}</p>
+        </p>
+
+        <hr>
+
+        <!-- Date/Time -->
+        <p>{{ post.created_time }}</p>
+
+        <hr>
+
+        <!-- Preview Image -->
+        <img class="img-fluid rounded" src="{{ MEDIA_URL }}{{ post.images }}" alt="">
+
+        {{ post.body|safe }}
+        <p class="text-center">
+            -- END --
+        </p>
+
+          <div class="media my-4">
+        <!-- JiaThis Button BEGIN -->
+                <div class="jiathis_style">
+                <a class="jiathis_button_qzone">QQ空间</a>
+                <a class="jiathis_button_tsina">新浪微博</a>
+                <a class="jiathis_button_tqq">腾讯微博</a>
+                <a class="jiathis_button_weixin">微信</a>
+                <a class="jiathis_button_copy">复制网址</a>
+                <a class="jiathis_button_renren">人人网</a>
+                <a class="jiathis_button_cqq">QQ好友</a>
+                <a class="jiathis_button_fb">Facebook</a>
+                <a class="jiathis_button_douban">豆瓣</a>
+                <a href="http://www.jiathis.com/share?uid=2152093" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+                <a class="jiathis_counter_style"></a>
+                </div>
+        <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2152093" charset="utf-8"></script>
+        <!-- JiaThis Button END -->
+          </div>
+
+        <!-- Comments Form -->
+{#        <div class="card my-4">#}
+{#            <h5 class="card-header">Leave a Comment:</h5>#}
+{#            <div class="card-body">#}
+{#                <form action="{% url 'comments:post_comment' post.pk %}" method="post" class="comment-form">#}
+{#            {% csrf_token %}#}
+{#            <div class="row">#}
+{#                <div class="col-md-4">#}
+{#                    <label for="{{ form.name.id_for_label }}">名字：</label>#}
+{#                    {{ form.name }}#}
+{#                    {{ form.name.errors }}#}
+{#                </div>#}
+{#                <div class="col-md-4">#}
+{#                    <label for="{{ form.email.id_for_label }}">邮箱：</label>#}
+{#                    {{ form.email }}#}
+{#                    {{ form.email.errors }}#}
+{#                </div>#}
+{#                <div class="col-md-12">#}
+{#                    <label for="{{ form.text.id_for_label }}">评论：</label>#}
+{#                    {{ form.text }}#}
+{#                    {{ form.text.errors }}#}
+{#                    <button type="submit" class="comment-btn">Go</button>#}
+{#                </div>#}
+{#            </div>    <!-- row -->#}
+{#        </form>#}
+{#            </div>#}
+{#        </div>#}
+        <div class="card my-4">
+            <div class="card-body">
+                <textarea id="js-pl-textarea" class="form-control" rows="3" placeholder="吐槽,留言,建议"></textarea>
+            </div>
+
+            <div><input type="button" class="btn btn-primary" id="js-pl-submit" value="发表评论"></div>
+
+            <p class="global-errortip js-global-error"></p>
+        </div>
+
+        <!-- Single Comment -->
+         {% for comment in comment_list %}
+        <div class="media mb-4">
+{#            <img class="d-flex mr-3 rounded-circle" src="{% static 'images/2.jpg' %}" alt="">#}
+            <span>名字：</span>
+            <div class="media-body">
+                <h5 class="mt-0">{{ comment.name }}</h5>
+{#                <h5 class="mt-0">{{ comment.email }}</h5>#}
+                <h6>{{ comment.text }}</h6>
+                <span>评论时间:</span><span class="mt-0">{{ comment.created_time }}</span>
+            </div>
+        </div>
+             {% empty %}
+             暂无评论
+        {% endfor %}
+
+        <!-- Comment with nested comments -->
+{#       <div class="media mb-4">#}
+{#            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+{#            <div class="media-body">#}
+{#                <h5 class="mt-0">Commenter Name</h5>#}
+{#                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.#}
+{##}
+{#                <div class="media mt-4">#}
+{#                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+{#                    <div class="media-body">#}
+{#                        <h5 class="mt-0">Commenter Name</h5>#}
+{#                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#                <div class="media mt-4">#}
+{#                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">#}
+{#                    <div class="media-body">#}
+{#                        <h5 class="mt-0">Commenter Name</h5>#}
+{#                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#            </div>#}
+{#        </div>#}
+
+    </div>
+
+{% endblock main %}
+
+{% block custom_js  %}
+<script type="text/javascript">
+    $('#js-pl-submit').on('click',function () {
+    var comments = $('#js-pl-textarea').val()
+    if(comments == ""){
+        alert("评论不能为空")
+        return
+    }
+    $.ajax({
+        cache:false,
+        type:"POST",
+        url:"{% url 'comments:addcomment' %}",
+        data:{'post_id':{{ post.id }},'comments':comments},
+        async:true,
+        beforeSend:function (xhr,settings) {
+                    xhr.setRequestHeader("X-CSRFToken","{{ csrf_token }}");
+                },
+        success:function (data) {
+            if (data.status == 'fail'){
+                if (data.msg == '用户未登录'){
+                    window.location.href = {% url 'login' %};
+                }else {
+                    alert(data.msg)
+                }
+            }else if(data.status == "success"){
+                window.location.reload()
+            }
+        }
+    })
+    })
+</script>
+{% endblock custom_js %}
+

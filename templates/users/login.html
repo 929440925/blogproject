@@ -1,0 +1,80 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/login.js' %}"></script>
+    {#  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">#}
+    {#  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>#}
+    <style>
+        body{
+            margin-left:auto;
+            margin-right:auto;
+            margin-TOP:100PX;
+            width:20em;
+        }
+
+        .center-block {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <form action="{% url 'login' %}" method="post" onsubmit="return checkFom()" >
+        <div style="font-size: 25px; font-weight: bold;text-align: center;">
+            <p class="center-block">用户登陆</p>
+        </div>
+        <div class="input-group" {% if login_form.errors.username %}errorput{% endif %}>
+            <span class="input-group-addon" id="basic-addon1">用户名</span>
+            <input type="text" id="name" name="username" class="form-control" placeholder="用户名" aria-describedby="basic-addon1">
+        </div>
+        <div id="error1"></div>
+        <br>
+        <!--下面是密码输入框-->
+        <div class="input-group" {% if login_form.errors.username %}errorput{% endif %}>
+            <span class="input-group-addon" id="basic-addon1">密&nbsp;&nbsp;&nbsp;&nbsp;码</span>
+            <input  type="password" id="password" name="password" class="form-control" placeholder="密码" aria-describedby="basic-addon1">
+        </div>
+        <div id="error2"></div>
+        <br>
+        <div class="error btns login-form-tips" id="jsLoginTips">{% for key,error in login_form.errors.items %}{{ error }}{% endfor %}{{ msg }}</div>
+        <div class="input-group">
+            <input type="checkbox" class="form-contro3" > 记住账号
+        </div>
+        <br>
+        <!--下面是登陆按钮,包括颜色控制-->
+        <input type="submit" style="width:280px;" class="btn btn-default"value="登 录" />
+        <a href="{% url 'register' %}" style="width: 280px;" class="btn btn-default">注 册</a>
+    {% csrf_token %}
+    </form>
+</div>
+</body>
+<script>
+    function checkFom() {
+        var username = document.getElementById("name").value;
+        var password = document.getElementById("password").value;
+        var error1 = document.getElementById("error1").value;
+        var error2 = document.getElementById("error2").value;
+        if(username=="" || username==null){
+            alert("账号不可以为空");
+            return false;
+        }
+        if (password=="" || password==null){
+            alert("密码不可以为空");
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+</script>
+</html>

@@ -1,0 +1,222 @@
+{% load staticfiles %}
+{% load blog_tags %}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Jummy & Sweet</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/blog-home.css' %}" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'blog:index' %}">Start Bootstrap</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'blog:index' %}">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/929440925/blogproject.git">GIT</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://music.163.com/#/user/home?id=131805611">MyMusic</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog:love' %}">LOVE</a>
+                </li>
+
+                {% if request.user.is_authenticated %}
+{#                 <div class=" btn btn-group nav-item" >#}
+{#                  <button class="nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                     <span class="nav-item">{{ user.username }}</span>#}
+{#                  </button>#}
+{#                  <ul class="dropdown-menu">#}
+{#                    <li><a>ddd</a></li>#}
+{#                  </ul>#}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{ user.username }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">QUIT</a>
+                </li>
+{#                </div>#}
+                {% else %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">LOGIN</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">REGISTER</a>
+                </li>
+                {% endif %}
+
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+        {% block main %}
+        {% endblock main %}
+
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+            <!-- Search Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                <form method="get" action="{% url 'haystack_search' %}">
+                <div class="card-body">
+                    <div class="input-group">
+
+                        <input type="search" class="form-control"  placeholder="Search for..." required>
+                        <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="submit">Go!</button>
+                </span>
+
+                    </div>
+                </div>
+                    </form>
+            </div>
+
+            <!-- Categories Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">最新文章</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {% get_recent_posts as recent_post_list %}
+                            <ul class="list-unstyled mb-0">
+                                {% for post in recent_post_list %}
+                                    <li>
+                                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                                    </li>
+                                {% empty %}
+                                    暂无文章！
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">归档</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {% archives as date_list %}
+                            <ul class="list-unstyled mb-0">
+                                {% for date in date_list %}
+                                    <li>
+                                        <a href="{% url 'blog:archives' date.year date.month %}">{{ date.year }} 年 {{ date.month }} 月</a>
+                                    </li>
+                                {% empty %}
+                                    暂无归档！
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">分类</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {% get_categories as category_list %}
+                            <ul class="list-unstyled mb-0">
+                                {% for category in category_list %}
+                                    <li>
+                                        <a href="{% url 'blog:category' category.pk %}">{{ category.name }} <span class="post-count">({{ category.num_posts }})</span></a>
+                                    </li>
+                                {% empty %}
+                                    暂无分类！
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">标签云</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {% get_tags as tag_list %}
+                            <ul class="list-unstyled mb-0">
+                                {% for tag in tag_list %}
+                                    <li>
+                                         <a href="{% url 'blog:tag' tag.pk %}">{{ tag.name }}</a>
+                                    </li>
+                                {% empty %}
+                                    暂无标签！
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div><a href="https://www.facebook.com/login.php?skip_api_login=1&api_key=113869198637480&signed_next=1&next=https%3A%2F%2Fwww.facebook.com%2Fv2.11%2Fdialog%2Foauth%3Fchannel%3Dhttps%253A%252F%252Fstaticxx.facebook.com%252Fconnect%252Fxd_arbiter%252Fr%252FlY4eZXm_YWu.js%253Fversion%253D42%2523cb%253Df3a19cc1fb60d3c%2526domain%253Ddevelopers.facebook.com%2526origin%253Dhttps%25253A%25252F%25252Fdevelopers.facebook.com%25252Ff3f9f427640a094%2526relation%253Dopener%26redirect_uri%3Dhttps%253A%252F%252Fstaticxx.facebook.com%252Fconnect%252Fxd_arbiter%252Fr%252FlY4eZXm_YWu.js%253Fversion%253D42%2523cb%253Df6dd5ba8558e78%2526domain%253Ddevelopers.facebook.com%2526origin%253Dhttps%25253A%25252F%25252Fdevelopers.facebook.com%25252Ff3f9f427640a094%2526relation%253Dopener%2526frame%253Df3b619cc6c18a88%26display%3Dpopup%26scope%26response_type%3Dnone%252Ctoken%252Csigned_request%26domain%3Ddevelopers.facebook.com%26auth_type%26ref%3DLoginButton%26origin%3D1%26client_id%3D113869198637480%26seen_revocable_perms_nux%3Dfalse%26ret%3Dlogin%26sdk%3Djoey%26logger_id%3Da48fdd7b-2219-ee2b-7633-5189e527f288&cancel_url=https%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2FlY4eZXm_YWu.js%3Fversion%3D42%23cb%3Df6dd5ba8558e78%26domain%3Ddevelopers.facebook.com%26origin%3Dhttps%253A%252F%252Fdevelopers.facebook.com%252Ff3f9f427640a094%26relation%3Dopener%26frame%3Df3b619cc6c18a88%26error%3Daccess_denied%26error_code%3D200%26error_description%3DPermissions%2Berror%26error_reason%3Duser_denied%26e2e%3D%257B%257D&display=popup&locale=zh_CN&logger_id=a48fdd7b-2219-ee2b-7633-5189e527f288">facebook</a></div>
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+{% block custom_js %}{% endblock custom_js %}
+</body>
+
+</html>
