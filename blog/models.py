@@ -78,8 +78,8 @@ class Post(models.Model):
     # https://docs.djangoproject.com/en/1.10/topics/db/models/#relationships
     category = models.ForeignKey(Category,verbose_name=u'分类名')
     tags = models.ManyToManyField(Tag, blank=True,verbose_name=u'标签名')
-    #image = models.ImageField(upload_to='image/%Y/%m',default=u'image/1.jpg',max_length=100,verbose_name=u'主照片')
-    #images = models.ImageField(upload_to='images/%Y/%m', default=u'images/1.jpg', max_length=100, verbose_name=u'详细照片')
+    image = models.ImageField(upload_to='image/%Y/%m',default=u'image/1.jpg',max_length=100,verbose_name=u'主照片')
+    images = models.ImageField(upload_to='images/%Y/%m', default=u'images/1.jpg', max_length=100, verbose_name=u'详细照片')
 
     # 文章作者，这里 User 是从 django.contrib.auth.models 导入的。
     # django.contrib.auth 是 Django 内置的应用，专门用于处理网站用户的注册、登录等流程，User 是 Django 为我们已经写好的用户模型。

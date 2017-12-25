@@ -19,6 +19,7 @@ from django.http import HttpResponse
 import xadmin
 from blog.feeds import AllPostsRssFeed
 from users.views import LoginView,LogoutView, RegisterView, ActiveUserView
+from django.views.generic.base import RedirectView
 from django.views.static import serve
 from blogproject.settings import MEDIA_ROOT
 
@@ -36,6 +37,6 @@ urlpatterns = [
     url(r'^register/$',RegisterView.as_view(),name='register'),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^active/(?P<active_code>.*)/$', ActiveUserView.as_view(), name='user_active'),  # 邮箱验证的页面
-    url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
-
+    url(r'^media/(?P<path>.*)$', serve, {'document_root':MEDIA_ROOT}),
+    url(r'^favicon\.ico$',RedirectView.as_view(url='/static/favicon.ico')),
 ]

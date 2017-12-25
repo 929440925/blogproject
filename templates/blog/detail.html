@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block main %}
+
     <div class="col-lg-8">
 
         <!-- Title -->
@@ -22,7 +23,7 @@
         <!-- Preview Image -->
         <img class="img-fluid rounded" src="{{ MEDIA_URL }}{{ post.images }}" alt="">
 
-        {{ post.body|safe }}
+        <div>{{ post.body|safe }}</div>
         <p class="text-center">
             -- END --
         </p>
@@ -78,7 +79,7 @@
                 <textarea id="js-pl-textarea" class="form-control" rows="3" placeholder="吐槽,留言,建议"></textarea>
             </div>
 
-            <div><input type="button" class="btn btn-primary" id="js-pl-submit" value="发表评论"></div>
+            <div><input type="button" class="btn btn-primary "  id="js-pl-submit" value="发表评论" style="margin-left: 20px;"></div>
 
             <p class="global-errortip js-global-error"></p>
         </div>
