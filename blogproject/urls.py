@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
     url(r'', include('blog.urls',namespace='blog')),
     url(r'^urses/',include('users.urls',namespace='users')),
+    url(r'^rests/',include('rests.urls',namespace='rests')),
     url(r'', include('comments.urls',namespace='comments')),
     url(r'^robots\.txt$', lambda r: HttpResponse('User-agent: *\nDisallow: /', content_type='text/plain')),
     url(r'^search/', include('haystack.urls')),

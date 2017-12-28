@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block main %}
+    <style type="text/css">
+        #pic img{
+            width: 100%;
+        }
+    </style>
 
     <div class="col-lg-8">
 
@@ -23,7 +28,7 @@
         <!-- Preview Image -->
         <img class="img-fluid rounded" src="{{ MEDIA_URL }}{{ post.images }}" alt="">
 
-        <div>{{ post.body|safe }}</div>
+        <div id="pic">{{ post.body|safe }}</div>
         <p class="text-center">
             -- END --
         </p>
